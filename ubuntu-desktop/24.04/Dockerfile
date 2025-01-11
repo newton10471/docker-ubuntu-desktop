@@ -24,6 +24,15 @@ COPY docker_config /docker_config
 # Remove default user ubuntu if exist
 RUN userdel ubuntu || true
 
+## Install some potentially required build tools
+RUN apt-get update && apt-get install -y curl gpg git
+
+## set up nvidia-container-toolkit repo
+# RUN curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+#   && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+#     sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+#     tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+
 ## Install and Configure OpenGL
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -76,6 +85,12 @@ Pin-Priority: 1001" > /etc/apt/preferences.d/mozilla-firefox &&\
 ENV DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
 RUN apt-get update && apt-get install -y pulseaudio && mkdir -p /var/run/dbus &&\
     rm -rf /var/lib/apt/lists/*
+
+## Install Matt's custom packages
+RUN apt-get update && apt-get install -y neovim tmux openvpn chromium-browser amule transmission
+
+## Install nvidia-container-toolkis
+# RUN apt-get update && apt-get install -y nvidia-container-toolkit
 
 ## Configure ssh 
 RUN mkdir -p /var/run/sshd && \
