@@ -5,6 +5,9 @@
 # echo "argv: $1"
 UBUNTU_VERSION=`echo $1 | awk -F '-cu' '{print $1}'`
 CUDA_VERSION=`echo $1 | awk -F '-cu' '{print $2}'`
+DATETIME_TAG=`date +"%m%d%Y-%H%M"`
+DATE_TAG=`date +"%m%d%Y"`
+CUSTOM_TAG='mrn'
 echo "ubuntu version:${UBUNTU_VERSION},cuda version:${CUDA_VERSION}"
 
 # check ubuntu version
@@ -36,7 +39,7 @@ fi
 
 docker build ubuntu-desktop --file ubuntu-desktop/${UBUNTU_VERSION}/Dockerfile \
              --build-arg BASE_IMAGE=${BASE_IMAGE} \
-             --tag ubuntu-desktop:${DOCKER_TAG}
+             --tag ubuntu-desktop:${DOCKER_TAG}-${CUSTOM_TAG}
 if [[ $? != 0 ]]; then 
     echo "Failed to build docker image 'ubuntu-desktop:${DOCKER_TAG}'"
     exit -3
