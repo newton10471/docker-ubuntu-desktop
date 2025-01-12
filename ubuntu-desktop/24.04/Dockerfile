@@ -25,13 +25,7 @@ COPY docker_config /docker_config
 RUN userdel ubuntu || true
 
 ## Install some potentially required build tools
-RUN apt-get update && apt-get install -y curl gpg git
-
-## set up nvidia-container-toolkit repo
-# RUN curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
-#   && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
-#     sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
-#     tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+RUN apt-get update && apt-get install -y curl gpg apt-utils
 
 ## Install and Configure OpenGL
 RUN apt-get update && \
@@ -87,10 +81,12 @@ RUN apt-get update && apt-get install -y pulseaudio && mkdir -p /var/run/dbus &&
     rm -rf /var/lib/apt/lists/*
 
 ## Install Matt's custom packages
-RUN apt-get update && apt-get install -y neovim tmux openvpn chromium-browser amule transmission
+RUN apt-get update && apt-get install -y neovim tmux openvpn amule transmission btop git busybox ripgrep 
 
-## Install nvidia-container-toolkis
-# RUN apt-get update && apt-get install -y nvidia-container-toolkit
+# Install Chrome browser
+RUN curl -LO https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN apt-get install -y ./google-chrome-stable_current_amd64.deb
+RUN rm google-chrome-stable_current_amd64.deb
 
 ## Configure ssh 
 RUN mkdir -p /var/run/sshd && \

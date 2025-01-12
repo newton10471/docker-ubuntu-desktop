@@ -4,3 +4,6 @@ apt-get install -y sudo vim gedit locales gnupg2 wget curl zip lsb-release bash-
 apt-get install -y net-tools iputils-ping mesa-utils software-properties-common build-essential
 apt-get install -y python3 python3-pip python3-numpy
 apt-get install -y openssh-server openssl git git-lfs tmux
+
+# added by Matt for PIA config to be sure /dev/net/tun device comes up
+echo "tun" | sudo tee /etc/modules-load.d/tun.conf
